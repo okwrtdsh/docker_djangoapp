@@ -1,0 +1,16 @@
+version: '2'
+services:
+  web:
+    build: ./nginx
+    links:
+      - djangoapp
+    volumes:
+      - ./static:/var/www/static:ro
+      - ./static:/var/www/media:ro
+      - ./nginx/sites-enabled:/etc/nginx/sites-enabled:ro
+    command: /bin/bash -c "nginx -g 'daemon off;'"
+  djangoapp:
+    build: ./
+    volumes:
+      - .:/code
+      - ./uwsgi.ini:/uwsgi.ini:ro

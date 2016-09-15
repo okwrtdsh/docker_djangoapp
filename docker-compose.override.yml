@@ -1,0 +1,28 @@
+version: '2'
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=password
+  web:
+    ports:
+      - "8000:80"
+    environment:
+      - SCRIPT_NAME=/demo
+    volumes:
+      - ./log/nginx:/var/log/nginx
+  djangoapp:
+    volumes:
+      - ~/.ssh/id_rsa:/root/.ssh/id_rsa:ro
+      - ./log/djangoapp:/var/log/djangoapp
+    environment:
+      - DJANGO_SETTINGS_MODULE=example.docker_settings
+      - DJANGO_DEBUG=True
+      - DJANGO_ADMIN_EMAIL=okwrtdsh@gmail.com
+      - DJANGO_DB_NAME=postgres
+      - DJANGO_DB_USER=postgres
+      - DJANGO_DB_PASSWORD=password
+      - DJANGO_EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
+      - DJANGO_EMAIL_HOST_USER=example@example.com
+      - DJANGO_EMAIL_HOST_PASSWORD=password
+
